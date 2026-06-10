@@ -171,32 +171,12 @@ function squadLabel(squadId) {
    LEGEND
 ========================= */
 function initLegend() {
-  const shortcutsEl = document.getElementById("legendShortcuts");
   const markersEl = document.getElementById("legendMarkers");
   const moveEl = document.getElementById("legendMove");
   const panel = document.getElementById("legend");
-  if (!shortcutsEl || !markersEl || !moveEl || !panel) return;
+  if (!markersEl || !moveEl || !panel) return;
 
   map.getContainer().appendChild(panel);
-
-  // Keyboard shortcuts section
-  shortcutsEl.innerHTML = `
-    <li>
-      <code>X</code>
-      <span>Toggle this legend</span>
-    </li>
-    <li>
-      <code>Right-click</code>
-      <span>Open marker menu</span>
-    </li>
-    <li>
-      <code>Left-click</code>
-      <span>Place marker or delete</span>
-    </li>
-    <li>
-      <code>Scroll</code>
-      <span>Rotate arrow on line</span>
-    </li>`;
 
   markersEl.innerHTML = MARKER_CATEGORIES.map(
     (cat) => `
@@ -251,9 +231,6 @@ function initLegend() {
       toggleLegend();
     }
   });
-
-  // Auto-open legend on first load (optional, comment out if you prefer closed by default)
-  toggleLegend();
 
   L.DomEvent.disableClickPropagation(panel);
   L.DomEvent.disableScrollPropagation(panel);
@@ -604,17 +581,14 @@ function updateToolStatus() {
   const el = document.getElementById("toolStatus");
   if (!el) return;
 
-  if (!mode) {
-    el.textContent = "Remove — left-click lines & markers to delete";
-    el.classList.add("ready");
-    return;
-  }
+  const shortcuts = [
+    "<strong>Shortcuts:</strong>",
+    "<span><code>X</code> Legend</span>",
+    "<span><code>Right-click</code> Menu</span>",
+    "<span><code>Scroll</code> Rotate</span>"
+  ];
 
-  let text = `Active: ${modeLabel(mode)}`;
-  if (mode === "route" || (canPlaceMarker() && !isNeutralMarker(mode))) {
-    text += ` (${squadLabel(activeSquad)})`;
-  }
-  el.textContent = text;
+  el.innerHTML = shortcuts.join(" · ");
   el.classList.add("ready");
 }
 
