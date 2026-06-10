@@ -219,11 +219,21 @@ function initLegend() {
       <span>Scroll while drawing or over a line to rotate the arrow</span>
     </li>`;
 
-  toggle.addEventListener("click", () => {
+  function toggleLegend() {
     const open = panel.classList.toggle("is-open");
     panel.setAttribute("aria-hidden", open ? "false" : "true");
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) requestAnimationFrame(positionLegendPanel);
+  }
+
+  toggle.addEventListener("click", toggleLegend);
+
+  // Keyboard shortcut: X key to toggle legend
+  document.addEventListener("keydown", (e) => {
+    if ((e.key === "x" || e.key === "X") && !isInputField(e.target)) {
+      e.preventDefault();
+      toggleLegend();
+    }
   });
 
   L.DomEvent.disableClickPropagation(panel);
@@ -233,6 +243,10 @@ function initLegend() {
     positionLegendPanel();
     map.on("move zoom resize viewreset", positionLegendPanel);
   });
+}
+
+function isInputField(el) {
+  return el.tagName === "INPUT" || el.tagName === "TEXTAREA";
 }
 
 function positionLegendPanel() {
