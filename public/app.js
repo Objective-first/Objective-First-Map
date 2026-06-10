@@ -133,8 +133,32 @@ document.addEventListener("contextmenu", (e) => e.preventDefault());
 
 initSquadBar();
 initLegend();
+initShortcutsDropdown();
 initRouteScrollRotate();
-updateToolStatus();
+
+/* =========================
+   SHORTCUTS DROPDOWN
+========================= */
+function initShortcutsDropdown() {
+  const toggle = document.getElementById("shortcutsToggle");
+  const menu = document.getElementById("shortcutsMenu");
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener("click", () => {
+    const open = menu.classList.toggle("is-open");
+    menu.setAttribute("aria-hidden", open ? "false" : "true");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.remove("is-open");
+      menu.setAttribute("aria-hidden", "true");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
 
 /* =========================
    SQUAD BAR
@@ -152,7 +176,6 @@ function initSquadBar() {
     const btn = e.target.closest("[data-squad]");
     if (!btn) return;
     activeSquad = Number(btn.dataset.squad);
-    updateToolStatus();
     bar.querySelectorAll(".squad-btn").forEach((b) => {
       b.classList.toggle("active", Number(b.dataset.squad) === activeSquad);
     });
@@ -569,27 +592,11 @@ function setMode(m) {
     menu.style.display = "none";
     menu.setAttribute("aria-hidden", "true");
   }
-  updateToolStatus();
   updateMapCursor();
 }
 
 function returnToRemoveMode() {
   setMode(null);
-}
-
-function updateToolStatus() {
-  const el = document.getElementById("toolStatus");
-  if (!el) return;
-
-  const shortcuts = [
-    "<strong>Shortcuts:</strong>",
-    "<span><code>X</code> Legend</span>",
-    "<span><code>Right-click</code> Menu</span>",
-    "<span><code>Scroll</code> Rotate</span>"
-  ];
-
-  el.innerHTML = shortcuts.join(" · ");
-  el.classList.add("ready");
 }
 
 function updateMapCursor() {

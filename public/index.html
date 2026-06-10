@@ -25,7 +25,31 @@
       </div>
       <div class="header-actions">
         <div id="currentMapName" class="current-map-name is-waiting">Waiting for live map…</div>
-        <div id="toolStatus" class="tool-status"></div>
+        <div class="shortcuts-dropdown-wrap">
+          <button type="button" id="shortcutsToggle" class="header-btn" aria-expanded="false" aria-controls="shortcutsMenu">
+            ? Help
+          </button>
+          <div id="shortcutsMenu" class="shortcuts-dropdown" aria-hidden="true">
+            <div class="shortcuts-list">
+              <div class="shortcut-item">
+                <kbd>X</kbd>
+                <span>Toggle legend</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Right-click</kbd>
+                <span>Open marker menu</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Left-click</kbd>
+                <span>Place marker or delete</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Scroll</kbd>
+                <span>Rotate arrow on line</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
