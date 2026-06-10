@@ -25,9 +25,6 @@
       </div>
       <div class="header-actions">
         <div id="currentMapName" class="current-map-name is-waiting">Waiting for live map…</div>
-        <button type="button" id="legendToggle" class="header-btn" aria-expanded="false" aria-controls="legend">
-          Legend
-        </button>
         <div id="toolStatus" class="tool-status"></div>
       </div>
     </header>
@@ -40,7 +37,11 @@
     <main class="map-stage">
       <div id="map"></div>
       <aside id="legend" class="legend-panel" aria-hidden="true">
-        <h3 class="legend-title">Legend</h3>
+        <h3 class="legend-title">Legend & Shortcuts</h3>
+        <section class="legend-section">
+          <h4>Keyboard Shortcuts</h4>
+          <ul id="legendShortcuts" class="legend-list"></ul>
+        </section>
         <section class="legend-section">
           <h4>Markers</h4>
           <p class="legend-note">Right-click to place markers · squad colour on orders only · spots &amp; pings are team-wide.</p>
