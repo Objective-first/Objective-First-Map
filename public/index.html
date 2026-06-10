@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objective First — HLL Tactical Map</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo-wrap">
+          <img src="assets/logo.png" alt="Objective First" class="brand-logo" width="52" height="52">
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Tactical Map</span>
+          <span class="brand-sub">Hell Let Loose</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div id="currentMapName" class="current-map-name is-waiting">Waiting for live map…</div>
+        <button type="button" id="legendToggle" class="header-btn" aria-expanded="false" aria-controls="legend">
+          Legend
+        </button>
+        <div id="toolStatus" class="tool-status"></div>
+      </div>
+    </header>
+
+    <section class="squad-panel">
+      <span class="panel-label">Squads</span>
+      <div id="squadBar"></div>
+    </section>
+
+    <main class="map-stage">
+      <div id="map"></div>
+      <aside id="legend" class="legend-panel" aria-hidden="true">
+        <h3 class="legend-title">Legend</h3>
+        <section class="legend-section">
+          <h4>Markers</h4>
+          <p class="legend-note">Right-click to place markers · squad colour on orders only · spots &amp; pings are team-wide.</p>
+          <ul id="legendMarkers" class="legend-list"></ul>
+        </section>
+        <section class="legend-section">
+          <h4>Move lines</h4>
+          <p class="legend-note">Squad name on the line · arrow at the end shows direction.</p>
+          <ul id="legendMove" class="legend-list"></ul>
+        </section>
+      </aside>
+    </main>
+
+    <p id="hint" class="map-hint">
+      Draw a line, scroll to rotate the arrow · Scroll over a line later to adjust direction
+    </p>
+
+    <div id="menu" role="menu" aria-hidden="true"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="markers.js"></script>
+  <script src="liveMap.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
