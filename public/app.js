@@ -171,13 +171,32 @@ function squadLabel(squadId) {
    LEGEND
 ========================= */
 function initLegend() {
+  const shortcutsEl = document.getElementById("legendShortcuts");
   const markersEl = document.getElementById("legendMarkers");
   const moveEl = document.getElementById("legendMove");
-  const toggle = document.getElementById("legendToggle");
   const panel = document.getElementById("legend");
-  if (!markersEl || !moveEl || !toggle || !panel) return;
+  if (!shortcutsEl || !markersEl || !moveEl || !panel) return;
 
   map.getContainer().appendChild(panel);
+
+  // Keyboard shortcuts section
+  shortcutsEl.innerHTML = `
+    <li>
+      <code>X</code>
+      <span>Toggle this legend</span>
+    </li>
+    <li>
+      <code>Right-click</code>
+      <span>Open marker menu</span>
+    </li>
+    <li>
+      <code>Left-click</code>
+      <span>Place marker or delete</span>
+    </li>
+    <li>
+      <code>Scroll</code>
+      <span>Rotate arrow on line</span>
+    </li>`;
 
   markersEl.innerHTML = MARKER_CATEGORIES.map(
     (cat) => `
@@ -222,11 +241,8 @@ function initLegend() {
   function toggleLegend() {
     const open = panel.classList.toggle("is-open");
     panel.setAttribute("aria-hidden", open ? "false" : "true");
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) requestAnimationFrame(positionLegendPanel);
   }
-
-  toggle.addEventListener("click", toggleLegend);
 
   // Keyboard shortcut: X key to toggle legend
   document.addEventListener("keydown", (e) => {
@@ -235,6 +251,9 @@ function initLegend() {
       toggleLegend();
     }
   });
+
+  // Auto-open legend on first load (optional, comment out if you prefer closed by default)
+  toggleLegend();
 
   L.DomEvent.disableClickPropagation(panel);
   L.DomEvent.disableScrollPropagation(panel);
