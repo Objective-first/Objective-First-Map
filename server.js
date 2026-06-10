@@ -3,6 +3,10 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
+// ============================================================================
+// Environment Configuration
+// ============================================================================
+
 function loadEnvFile() {
   const envPath = path.join(__dirname, ".env");
   if (!fs.existsSync(envPath)) return;
@@ -24,6 +28,11 @@ function loadEnvFile() {
 }
 
 loadEnvFile();
+
+// ============================================================================
+// Dependencies & Server Setup
+// ============================================================================
+
 const { Server } = require("socket.io");
 const { getCrconMap, getCrconLiveState } = require("./crcon");
 const { HLL_MAPS, mapById, normalizeMapId } = require("./hllMaps");
@@ -34,6 +43,10 @@ const io = new Server(server);
 
 app.use(express.json());
 app.use(express.static("public"));
+
+// ============================================================================
+// State Management
+// ============================================================================
 
 let currentMapId = null;
 const markersByMap = Object.fromEntries(HLL_MAPS.map((map) => [map.id, []]));
@@ -51,6 +64,10 @@ let liveState = {
   playerCounts: null,
   updatedAt: null
 };
+
+// ============================================================================
+// Utility Functions
+// ============================================================================
 
 function stripLegacyArrows(data) {
   return Array.isArray(data) ? data.filter((m) => m.type !== "arrow") : [];
@@ -95,6 +112,10 @@ function markerUpdatePayload(data) {
   };
 }
 
+// ============================================================================
+// REST API Routes
+// ============================================================================
+
 app.get("/api/maps", (req, res) => {
   res.json(HLL_MAPS.map(mapPayload));
 });
@@ -125,6 +146,10 @@ app.get("/api/maps/:id/placeholder.svg", (req, res) => {
   <text x="500" y="532" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#cbd5e1">Drop ${map.image.replace("/maps/", "")} into public/maps to use real artwork</text>
 </svg>`);
 });
+
+// ============================================================================
+// CRCON Polling (Live Map Sync)
+// ============================================================================
 
 function startCrconPolling() {
   const baseUrl = process.env.CRCON_URL || process.env.HLL_CRCON_URL;
@@ -189,6 +214,10 @@ function startCrconPolling() {
   setInterval(pollCrcon, Number(process.env.CRCON_POLL_MS || 3000));
 }
 
+// ============================================================================
+// WebSocket Event Handlers
+// ============================================================================
+
 io.on("connection", (socket) => {
   socket.emit("load", serverState());
 
@@ -201,6 +230,10 @@ io.on("connection", (socket) => {
     }
   });
 });
+
+// ============================================================================
+// Server Initialization
+// ============================================================================
 
 startCrconPolling();
 
